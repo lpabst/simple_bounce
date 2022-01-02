@@ -20,6 +20,13 @@ const game = {
         keys: { down: {} },
         levelStartTime: null,
         ballsInteract,
+        ballHeldByMouse: null,
+        mousePos: {
+          prevX: null,
+          prevY: null,
+          x: null,
+          y: null
+        },
       };
   
       game.initCanvas(data);
@@ -50,8 +57,16 @@ const game = {
   
       createEventListener(window, "keydown", (e) => game.handleKeydown(e, data));
       createEventListener(window, "keyup", (e) => game.handleKeyup(e, data));
-      // createEventListener(data.canvas, 'click', (e) => game.handleMouseClickOnCanvas(e, data));
-      // createEventListener(data.ball, 'click', (e) => game.handleMouseClickOnBall(e, data));
+      window.data = data;
+      createEventListener(data.canvas.canvas, "mousedown", (e) =>
+        game.handleMouseDown(e, data)
+      );
+      createEventListener(data.canvas.canvas, "mousemove", (e) =>
+        game.handleMouseMove(e, data)
+      );
+      createEventListener(data.canvas.canvas, "mouseup", (e) =>
+        game.handleMouseUp(e, data)
+      );
     },
   
     initEntities: async function(data) {
@@ -98,16 +113,42 @@ const game = {
       data.keys.down[key] = false;
     },
 
-    handleMouseClickOnCanvas: function(e, data) {
-      console.log('clicked on canvas');
-        console.log(e);
-        console.log(data);
+    handleMouseDown: function(e, data) {
+        data.balls.forEach(ball => {
+          // check for horizontal clicking on a ball
+          if (ball.x - ball.radius * 0.9 < e.offsetX && ball.x + ball.radius * 0.9 > e.offsetX) {
+            // check for vertical clicking on a ball
+            if (ball.y - ball.radius * 0.9 < e.offsetY && ball.y + ball.radius * 0.9 > e.offsetY) {
+              data.ballHeldByMouse = ball;
+            }
+          }
+        })
     },
 
-    handleMouseClickOnBall: function(e, data) {
-      console.log('clicked on ball');
-      console.log(e);
-      console.log(data)
+    handleMouseMove: function(e, data) {
+      // track mouse velocity for when we release
+      data.mousePos.prevX = data.mousePos.x;
+      data.mousePos.prevY = data.mousePos.y;
+      data.mousePos.x = e.offsetX;
+      data.mousePos.y = e.offsetY;
+
+      // if mouse is not holding a ball, do nothing else
+      if (!data.ballHeldByMouse) return;
+
+      // otherwise, move the ball to wherever the mouse moves it
+      data.ballHeldByMouse.x = e.offsetX;
+      data.ballHeldByMouse.y = e.offsetY;
+    },
+
+    handleMouseUp: function(e, data) {
+      // calculate the ball's new x and y velocity based on the mouse velocity
+      const xVel = data.mousePos.x - data.mousePos.prevX;
+      const yVel = data.mousePos.y - data.mousePos.prevY;
+      data.ballHeldByMouse.xVel = xVel;
+      data.ballHeldByMouse.yVel = yVel;
+
+      // release the ball
+      data.ballHeldByMouse = null;
     },
   
     /***************** END EVENT HANDLERS ******************/

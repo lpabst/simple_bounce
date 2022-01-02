@@ -40,6 +40,14 @@ function Ball(x, y, color, xVel, bouncinessPercentage) {
 
   // called by the game.update method
   this.update = function (data) {
+    // if the mouse is holding this ball, it should do nothing
+    if (data.ballHeldByMouse && data.ballHeldByMouse.id === this.id) {
+      this.yVel = 0;
+      this.xVel = 0;
+      this.currentCollisions = {};
+      return;
+    }
+
     var newX = this.x;
     var newY = this.y;
 
@@ -92,7 +100,16 @@ function Ball(x, y, color, xVel, bouncinessPercentage) {
     if (data.ballsInteract) {
       // see if we collided with any other balls
       data.balls.forEach((ball) => {
+        // don't interact with self
         if (ball.id === this.id) return;
+        // if either ball is being held by the mouse, don't interact
+        if (
+          data.ballHeldByMouse &&
+          (data.ballHeldByMouse.id === this.id ||
+            data.ballHeldByMouse.id === ball.id)
+        ) {
+          return;
+        }
         const collided = isBallCollision(this, ball);
         if (collided) {
           // if 2 balls are on top of each other, they should "roll" off of each other
