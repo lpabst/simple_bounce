@@ -7,6 +7,9 @@ const game = {
       document.getElementById("controls").classList.add("hidden");
   
       // create data object to be passed around
+      const ballsInteract = document.getElementById(
+        "ballsInteractToggle"
+      ).checked;
       const data = {
         startTime: Date.now(),
         canvas: null,
@@ -16,6 +19,7 @@ const game = {
         eventListeners: [],
         keys: { down: {} },
         levelStartTime: null,
+        ballsInteract,
       };
   
       game.initCanvas(data);

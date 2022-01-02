@@ -11,6 +11,13 @@
 <body>
     <div id='controls' class="controls">
         <button onClick="addNewBall()" >Add New Ball</button>
+        <div class='flex'>
+            <p>Balls Interact</p>
+            <label class="switch">
+                <input id='ballsInteractToggle' type="checkbox" checked=true>
+                <span class="slider round"></span>
+            </label>
+        </div>
         <div id='ballInputs' class='ballInputs'>
             <div class='fullWidthFlex'>
                 <p>Ball</p>
@@ -22,12 +29,20 @@
             </div>
             <div class='fullWidthFlex'>
                 <p>Ball 1</p>
-                <input placeholder='startX' id='ball1StartX' value=100 />
-                <input placeholder='startY' id='ball1StartY' value=100 />
+                <input placeholder='startX' id='ball1StartX' value=200 />
+                <input placeholder='startY' id='ball1StartY' value=700 />
                 <input placeholder='color' id='ball1Color' value='green' />
                 <input placeholder='x velocity' id='ball1XVelocity' value=2 />
                 <input placeholder='bounciness' id='ball1Bounciness' value=0.7 />
             </div>
+            <!-- <div class='fullWidthFlex'>
+                <p>Ball 1</p>
+                <input placeholder='startX' id='ball2StartX' value=400 />
+                <input placeholder='startY' id='ball2StartY' value=700 />
+                <input placeholder='color' id='ball2Color' value='blue' />
+                <input placeholder='x velocity' id='ball2XVelocity' value=-1.2 />
+                <input placeholder='bounciness' id='ball2Bounciness' value=0.7 />
+            </div> -->
         </div>
         <div style="display: flex;">
             <button id="startButton" onclick="game.init()">
@@ -43,6 +58,9 @@
         // function to add in new rows for new balls before starting the game
         let ballCount = 1;
         function addNewBall() {
+            // max 20 balls on the screen
+            if (ballCount >= 20) return;
+
             // increment ball count for input ids to use
             ballCount++;
 
@@ -68,7 +86,7 @@
     </script>
 
     <script src="./helpers.js"></script>
-    <script src="./physics.js"></script>
+    <script src="./worldPhysics.js"></script>
     <script src="./entities.js"></script>
     <script src="./canvas.js"></script>
     <script src='./game.js'></script>
