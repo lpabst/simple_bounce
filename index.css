@@ -1,0 +1,14 @@
+.ballInputs {
+    width: 1000px;
+    position: relative;
+}
+
+.fullWidthFlex {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hidden {
+    display: none;
+}

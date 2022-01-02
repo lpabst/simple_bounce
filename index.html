@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Bounce</title>
+
+    <link rel='stylesheet' href='./index.css'></link>
+</head>
+<body>
+    <div id='controls' class="controls">
+        <button onClick="addNewBall()" >Add New Ball</button>
+        <div id='ballInputs' class='ballInputs'>
+            <div class='fullWidthFlex'>
+                <p>Ball</p>
+                <p>startX</p>
+                <p>startY</p>
+                <p>color</p>
+                <p>x velocity</p>
+                <p>bounciness</p>
+            </div>
+            <div class='fullWidthFlex'>
+                <p>Ball 1</p>
+                <input placeholder='startX' id='ball1StartX' value=100 />
+                <input placeholder='startY' id='ball1StartY' value=100 />
+                <input placeholder='color' id='ball1Color' value='green' />
+                <input placeholder='x velocity' id='ball1XVelocity' value=2 />
+                <input placeholder='bounciness' id='ball1Bounciness' value=0.7 />
+            </div>
+        </div>
+        <div style="display: flex;">
+            <button id="startButton" onclick="game.init()">
+                Start Game
+            </button>
+        </div>
+    </div>
+    <div class='canvasDiv'>
+        <canvas id='canvas' class='canvas' width=800 height=600></canvas>
+    </div>
+
+    <script>
+        // function to add in new rows for new balls before starting the game
+        let ballCount = 1;
+        function addNewBall() {
+            // increment ball count for input ids to use
+            ballCount++;
+
+            // some default values
+            const randomBounciness = getRandomFloat(0.3, 0.99);
+            const randomStartX = getRandomNumber(50, 750);
+            const randomStartY = getRandomNumber(30, 200);
+            const randomXVel = getRandomFloat(-2, 2);
+            const randomColor = getRandomColor(0, 255);
+            
+            // add the new row
+            const newRow = document.createElement('div');
+            newRow.classList.add('fullWidthFlex');
+            newRow.innerHTML = `<p>Ball ${ballCount}</p>
+            <input placeholder='startX' id='ball${ballCount}StartX' value=${randomStartX} />
+            <input placeholder='startY' id='ball${ballCount}StartY' value=${randomStartY} />
+            <input placeholder='color' id='ball${ballCount}Color' value="${randomColor}" />
+            <input placeholder='x velocity' id='ball${ballCount}XVelocity' value=${randomXVel} />
+            <input placeholder='bounciness' id='ball${ballCount}Bounciness' value=${randomBounciness} />
+            `
+            document.getElementById('ballInputs').appendChild(newRow);
+        }
+    </script>
+
+    <script src="./helpers.js"></script>
+    <script src="./physics.js"></script>
+    <script src="./entities.js"></script>
+    <script src="./canvas.js"></script>
+    <script src='./game.js'></script>
+</body>
+</html>
