@@ -141,6 +141,8 @@ const game = {
     },
 
     handleMouseUp: function(e, data) {
+      if (!data.ballHeldByMouse) return;
+      
       // calculate the ball's new x and y velocity based on the mouse velocity
       const xVel = data.mousePos.x - data.mousePos.prevX;
       const yVel = data.mousePos.y - data.mousePos.prevY;

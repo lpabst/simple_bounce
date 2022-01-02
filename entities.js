@@ -138,7 +138,6 @@ function Ball(x, y, color, xVel, bouncinessPercentage) {
             this.bouncinessPercentage > ball.bouncinessPercentage
               ? this.bouncinessPercentage
               : ball.bouncinessPercentage;
-          console.log(higherBounciness);
 
           // equal and opposite reactions (multiplied by bouncinessPercentage)
           const tempY = this.yVel;
